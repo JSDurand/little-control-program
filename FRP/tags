@@ -1,0 +1,10 @@
+cube	./Cube.hs	9;"	v
+display	./Display.hs	10;"	v
+fillIn	./Points.hs	16;"	v	file:
+fromIntegral2	./Points.hs	19;"	v	file:
+idle	./Display.hs	25;"	v
+keyboardMouse	./Bindings.hs	12;"	v
+main	Control.hs	8;"	v
+points	./Points.hs	11;"	v
+reshape	./Bindings.hs	8;"	v
+vertex3f	./Cube.hs	6;"	v	file:

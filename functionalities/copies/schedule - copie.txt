@@ -1,0 +1,8 @@
+Book borrow: 8/12
+Book borrow: 8/16
+Book borrow: 8/19
+Book borrow: 8/26
+Book borrow: 9/13
+Book borrow: 9/19
+Book borrow: 9/21
+Book borrow: 9/28

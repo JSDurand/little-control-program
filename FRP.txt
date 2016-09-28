@@ -1,0 +1,2 @@
+Rewrite the whole program using FRP, and integrate an extensible
+workflow system.
