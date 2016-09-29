@@ -49,31 +49,17 @@ pageDealing :: Names -> Reply -> Int -> Names -> IO (Reply, Name)
 pageDealing names reply pageNo oriLs = if isDigit (head reply)
     then if readI reply <= pageSize
       then return (realReply, realDirec)
-      else system "tput clear" >>
-        putStrLn ("Input a number from 1 to " ++ show pageSize) >> selectAgain
+      else do
+        system "tput clear"
+        putStrLn ("Input a number from 1 to " ++ show pageSize)
+        selectAgain
     else case reply of
       "e" -> return ("exit", "no directory")
-      "n" -> do
-        system "tput clear"
-        rep <- selectPage (pageNo + 1) . return . take pageSize . drop (pageSize * pageNo) $ names
-        pageDealing names rep (pageNo + 1) oriLs 
-      "p" -> do
-        system "tput clear"
-        rep <- selectPage savePrev . return . take pageSize . drop (pageSize * (pageNo - 2)) $ names
-        pageDealing names rep savePrev oriLs
-      ('g' : xs) -> do
-        system "tput clear"
-        let nom = readI xs
-        rep <- selectPage nom . return . take pageSize . drop (pageSize * (nom - 1)) $ names
-        pageDealing names rep nom oriLs
-      "h" -> do
-        system "tput clear"
-        rep <- selectPage 1 . return . take pageSize $ names
-        pageDealing names rep 1 oriLs
-      "l" -> do
-        system "tput clear"
-        rep <- selectPage lastPageNo . return . take pageSize . drop (pageSize * (lastPageNo - 1)) $ names
-        pageDealing names rep lastPageNo oriLs
+      "n" -> gotoPages (pageNo + 1)
+      "p" -> gotoPages savePrev
+      ('g' : xs) -> gotoPages (readI xs)
+      "h" -> gotoPages 1
+      "l" -> gotoPages lastPageNo
       _   -> do
         system "tput clear"
         putStrLn "Input n, e, p, l, h, or g only"
@@ -86,6 +72,10 @@ pageDealing names reply pageNo oriLs = if isDigit (head reply)
   realIndex   = pageSize * (pageNo - 1) + readI reply - 1
   selectAgain = (selectPage pageNo . return . take pageSize . drop (pageSize * (pageNo - 1)) $ names) >>=
     \newReply -> pageDealing names newReply pageNo oriLs
+  gotoPages n = do
+        system "tput clear"
+        rep <- selectPage n . return . take pageSize . drop (pageSize * (n - 1)) $ names
+        pageDealing names rep n oriLs 
 
 ending :: IO ()
 ending = putStrLn "Want to search again?" >>
